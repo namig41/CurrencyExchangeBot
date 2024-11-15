@@ -1,21 +1,37 @@
-from aiohttp import web
+import asyncio
+import logging
 
-from application.bot.bot import telegram_factory
-from settings import config
+from aiogram import (
+    Bot,
+    Dispatcher,
+)
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
+
+from application.bot.handlers import (
+    help_handler,
+    start_handler,
+)
+from settings.config import config
 
 
-async def init_app() -> web.Application:
-    app = web.Application()
+# Включаем логирование, чтобы не пропустить важные сообщения
+logging.basicConfig(level=logging.INFO)
 
-    app.router.add_route(
-        "*",
-        config.TELEGRAM_WEBHOOK_PATH,
-        await telegram_factory(),
-        name="tg_webhook_handler",
+
+# Запуск процесса поллинга новых апдейтов
+async def main():
+    bot = Bot(
+        token=config.TELEGRAM_TOKEN,
+        default=DefaultBotProperties(parse_mode=ParseMode.HTML),
     )
 
-    return app
+    dp = Dispatcher()
+    dp.include_router(start_handler.router)
+    dp.include_router(help_handler.router)
+
+    await dp.start_polling(bot)
 
 
 if __name__ == "__main__":
-    web.run_app(init_app())
+    asyncio.run(main())

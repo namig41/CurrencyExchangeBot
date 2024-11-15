@@ -7,7 +7,6 @@ services:
       - '8000:8000'
     volumes:
       - ../app/:/app
-      - ../database:/database
     env_file:
       - ../.env
     networks:

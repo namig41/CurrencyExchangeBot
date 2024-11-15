@@ -32,6 +32,15 @@ def convert_currency_document_to_entity(currency_data: dict) -> Currency:
     )
 
 
+def convert_currencies_document_to_entity(
+    currencies_data: list[dict],
+) -> Iterable[Currency]:
+    return [
+        convert_currency_document_to_entity(currency_data)
+        for currency_data in currencies_data
+    ]
+
+
 def convert_exchange_rate_entity_to_document(exchange_rate: ExchangeRate) -> dict:
     return {
         "id": exchange_rate.id,
