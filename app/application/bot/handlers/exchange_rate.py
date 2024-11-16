@@ -2,22 +2,44 @@ from aiogram import (
     Router,
     types,
 )
-from app.infrastructure.repositories.api_repostiory import CurrenciesAPIRepository
+from aiogram.filters import Command
+from infrastructure.contrainer.init import init_container
+from infrastructure.repositories.base import BaseExchangeRatesRepository
+from punq import Container
+
+from application.bot.handlers.converters import convert_exchange_rate_entity_to_string
+from domain.entities.exchange_rate import ExchangeRate
 
 
 router = Router()
 
 
-@router.message(commands=["exchange"])
-async def rate_handler(message: types.Message, repo: CurrenciesAPIRepository):
+@router.message(Command(commands=["exchange_rate"]))
+async def currency_handler(
+    message: types.Message,
+):
     args = message.text.split()
-    if len(args) < 2:
-        await message.answer("Пожалуйста, укажите код валюты, например: /rate USD")
+    if len(args) != 3:
+        await message.answer(
+            "Пожалуйста, укажите код базовой валюты валюты и целевой, например: /exchange_rate USD EUR",
+        )
         return
 
-    currency = args[1].upper()
-    rate = await repo.get_currency_rate(currency)
-    if rate:
-        await message.answer(f"Текущий курс {currency}: {rate}")
+    container: Container = init_container()
+    exchange_rates_repository: BaseExchangeRatesRepository = container.resolve(
+        BaseExchangeRatesRepository,
+    )
+
+    base_code = args[1].upper()
+    target_code = args[2].upper()
+    exchange_rate: ExchangeRate = (
+        await exchange_rates_repository.get_exchange_rate_by_codes(
+            base_code=base_code, target_code=target_code,
+        )
+    )
+
+    if exchange_rate:
+        currency_str = convert_exchange_rate_entity_to_string(exchange_rate)
+        await message.answer(f"<b>Информация о обменнике</b>\n{currency_str}")
     else:
-        await message.answer("Не удалось получить курс валюты. Проверьте код валюты.")
+        await message.answer("Не удалось получить обменник. Проверьте коды валют.")

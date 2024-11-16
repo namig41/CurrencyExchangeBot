@@ -6,7 +6,7 @@ from infrastructure.api.services.base import BaseAPIService
 
 @dataclass
 class ExchangeRateAPIService(BaseAPIService):
-    endpoint: str = "exchange_rate"
+    endpoint: str = "exchangeRate"
 
     async def get_exchange_rate(self, base_code: str, target_code: str) -> dict:
         try:

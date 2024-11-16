@@ -11,6 +11,8 @@ from aiogram.enums import ParseMode
 from application.bot.handlers import (
     currencies_handler,
     currency_handler,
+    exchange_rate_handler,
+    exchange_rates_handler,
     help_handler,
     start_handler,
 )
@@ -33,6 +35,8 @@ async def main():
     dp.include_router(help_handler.router)
     dp.include_router(currency_handler.router)
     dp.include_router(currencies_handler.router)
+    dp.include_router(exchange_rate_handler.router)
+    dp.include_router(exchange_rates_handler.router)
 
     await dp.start_polling(bot)
 

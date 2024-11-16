@@ -1,9 +1,10 @@
 from functools import wraps
 
 import httpx
+from infrastructure.logger.base import ILogger
 
 
-def handle_api_errors(logger):
+def handle_api_errors(logger: ILogger):
     def decorator(func):
         @wraps(func)
         async def wrapper(*args, **kwargs):

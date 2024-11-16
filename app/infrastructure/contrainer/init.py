@@ -28,7 +28,8 @@ def _init_container() -> Container:
 
     def init_api_currencies_repository() -> CurrenciesAPIRepository:
         return CurrenciesAPIRepository(
-            currency_api=CurrencyAPIService(), currencies_api=CurrenciesAPIService(),
+            currency_api=CurrencyAPIService(),
+            currencies_api=CurrenciesAPIService(),
         )
 
     def init_api_exchange_rates_repository() -> ExchangeRatesAPIRepository:

@@ -15,14 +15,6 @@ def convert_currency_entity_to_document(currency: Currency) -> dict:
     }
 
 
-def convert_currency_document_to_entity_without_id(currency_data: dict) -> Currency:
-    return Currency(
-        code=currency_data["code"],
-        fullname=currency_data["fullname"],
-        sign=currency_data["sign"],
-    )
-
-
 def convert_currency_document_to_entity(currency_data: dict) -> Currency:
     return Currency(
         id=currency_data["id"],
@@ -72,24 +64,20 @@ def convert_exchange_rate_all_document_to_entity(
     exchange_rate_data: dict,
 ) -> ExchangeRate:
 
-    base_currency = Currency(
-        id=exchange_rate_data["baseid"],
-        code=exchange_rate_data["basecode"],
-        fullname=exchange_rate_data["basefullname"],
-        sign=exchange_rate_data["basesign"],
+    exchnage_rate_id = int(exchange_rate_data["id"])
+    base_currency: Currency = convert_currency_document_to_entity(
+        exchange_rate_data["baseCurrency"],
     )
-
-    target_currency = Currency(
-        id=exchange_rate_data["targetid"],
-        code=exchange_rate_data["targetcode"],
-        fullname=exchange_rate_data["targetfullname"],
-        sign=exchange_rate_data["targetsign"],
+    target_currency: Currency = convert_currency_document_to_entity(
+        exchange_rate_data["targetCurrency"],
     )
+    rate = Decimal(exchange_rate_data["rate"])
 
-    return convert_exchange_rate_document_to_entity(
-        exchange_rate_data,
-        base_currency,
-        target_currency,
+    return ExchangeRate(
+        id=exchnage_rate_id,
+        base_currency=base_currency,
+        target_currency=target_currency,
+        rate=rate,
     )
 
 
