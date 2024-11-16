@@ -1,5 +1,4 @@
 from typing import Iterable
-from punq import Container
 
 from aiogram import (
     Router,
@@ -8,6 +7,7 @@ from aiogram import (
 from aiogram.filters import Command
 from infrastructure.contrainer.init import init_container
 from infrastructure.repositories.base import BaseCurrenciesRepository
+from punq import Container
 
 from application.bot.handlers.converters import convert_currencies_entity_to_string
 from domain.entities.currency import Currency

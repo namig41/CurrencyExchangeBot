@@ -2,11 +2,10 @@ from aiogram import (
     Router,
     types,
 )
-from punq import Container
-
 from aiogram.filters import Command
 from infrastructure.contrainer.init import init_container
 from infrastructure.repositories.base import BaseCurrenciesRepository
+from punq import Container
 
 from application.bot.handlers.converters import convert_currency_entity_to_string
 

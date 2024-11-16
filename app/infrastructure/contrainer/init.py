@@ -1,8 +1,3 @@
-from punq import (
-    Container,
-    Scope,
-)
-
 from functools import lru_cache
 
 from infrastructure.api.services.currencies import CurrenciesAPIService
@@ -17,6 +12,10 @@ from infrastructure.repositories.base import (
     BaseCurrenciesRepository,
     BaseExchangeRatesRepository,
 )
+from punq import (
+    Container,
+    Scope,
+)
 
 
 @lru_cache(1)
@@ -29,7 +28,7 @@ def _init_container() -> Container:
 
     def init_api_currencies_repository() -> CurrenciesAPIRepository:
         return CurrenciesAPIRepository(
-            currency_api=CurrencyAPIService(), currencies_api=CurrenciesAPIService()
+            currency_api=CurrencyAPIService(), currencies_api=CurrenciesAPIService(),
         )
 
     def init_api_exchange_rates_repository() -> ExchangeRatesAPIRepository:

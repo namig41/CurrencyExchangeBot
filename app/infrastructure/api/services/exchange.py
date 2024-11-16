@@ -1,12 +1,7 @@
 from dataclasses import dataclass
-from typing import Protocol
 
 import httpx
 from infrastructure.api.services.base import BaseAPIService
-
-
-class IExchangeAPIService(Protocol):
-    async def get_exchange(self, params: dict) -> dict: ...
 
 
 @dataclass

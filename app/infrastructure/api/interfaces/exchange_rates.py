@@ -1,7 +1,4 @@
-from dataclasses import dataclass
 from typing import Protocol
-
-import httpx
 
 
 class IExchangeRatesAPIService(Protocol):
