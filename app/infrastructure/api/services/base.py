@@ -4,7 +4,7 @@ from dataclasses import (
 )
 
 import httpx
-from infrastructure.api.error_handler import handle_api_errors
+from infrastructure.api.services.error_handler import handle_api_errors
 from infrastructure.logger.base import ILogger
 from infrastructure.logger.logger import create_logger_dependency
 

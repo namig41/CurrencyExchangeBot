@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 from typing import Iterable
 
-from infrastructure.api.currencies import CurrenciesAPIService
-from infrastructure.api.currency import CurrencyAPIService
-from infrastructure.api.exchange_rate import ExchangeRateAPIService
-from infrastructure.api.exchange_rates import ExchangeRatesAPIService
+from infrastructure.api.interfaces.currencies import ICurrenciesAPIService
+from infrastructure.api.interfaces.currency import ICurrencyAPIService
+from infrastructure.api.interfaces.exchange_rate import IExchangeRateAPIService
+from infrastructure.api.interfaces.exchange_rates import IExchangeRatesAPIService
 from infrastructure.repositories.base import (
     BaseCurrenciesRepository,
     BaseExchangeRatesRepository,
@@ -23,8 +23,8 @@ from domain.entities.exchange_rate import ExchangeRate
 @dataclass
 class CurrenciesAPIRepository(BaseCurrenciesRepository):
 
-    currencies_api: CurrenciesAPIService
-    currency_api: CurrencyAPIService
+    currency_api: ICurrencyAPIService
+    currencies_api: ICurrenciesAPIService
 
     async def get_currencies(self) -> Iterable[Currency]:
         try:
@@ -51,8 +51,8 @@ class CurrenciesAPIRepository(BaseCurrenciesRepository):
 @dataclass
 class ExchangeRatesAPIRepository(BaseExchangeRatesRepository):
 
-    exchange_rate_api: ExchangeRateAPIService
-    exchange_rates_api: ExchangeRatesAPIService
+    exchange_rate_api: IExchangeRateAPIService
+    exchange_rates_api: IExchangeRatesAPIService
 
     async def get_exchange_rate_by_codes(
         self,

@@ -1,5 +1,5 @@
 import pytest
-from infrastructure.api.currencies import CurrenciesAPIService
+from infrastructure.api.services.currencies import CurrenciesAPIService
 
 
 @pytest.mark.asyncio

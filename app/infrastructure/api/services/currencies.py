@@ -1,7 +1,16 @@
 from dataclasses import dataclass
+from typing import Protocol
 
 import httpx
-from infrastructure.api.base import BaseAPIService
+from infrastructure.api.services.base import BaseAPIService
+
+
+@dataclass
+class ICurrenciesAPIService(Protocol):
+
+    async def get_currencies(self) -> dict: ...
+
+    async def post_currencies(self, currency_data: dict) -> dict: ...
 
 
 @dataclass
@@ -21,7 +30,9 @@ class CurrenciesAPIService(BaseAPIService):
         try:
             headers = {"Content-Type": "application/x-www-form-urlencoded"}
             return await self._post(
-                f"{self.base_url}/{self.endpoint}", data=currency_data, headers=headers,
+                f"{self.base_url}/{self.endpoint}",
+                data=currency_data,
+                headers=headers,
             )
         except httpx.HTTPStatusError as exc:
             if exc.response.status_code == 404:

@@ -1,7 +1,16 @@
 from dataclasses import dataclass
+from typing import Protocol
 
 import httpx
-from infrastructure.api.base import BaseAPIService
+from infrastructure.api.services.base import BaseAPIService
+
+
+class IExchangeRatesAPIService(Protocol):
+    async def get_exchange_rates(self) -> list[dict]: ...
+
+    async def post_exchange_rates(self, pyaload: dict) -> dict: ...
+
+    async def patch_exchange_rates(self, pyaload: dict) -> dict: ...
 
 
 @dataclass
@@ -21,7 +30,9 @@ class ExchangeRatesAPIService(BaseAPIService):
         try:
             headers = {"Content-Type": "application/x-www-form-urlencoded"}
             return await self._post(
-                f"{self.base_url}/{self.endpoint}", data=pyaload, headers=headers,
+                f"{self.base_url}/{self.endpoint}",
+                data=pyaload,
+                headers=headers,
             )
         except httpx.HTTPStatusError as exc:
             if exc.response.status_code == 404:
@@ -33,7 +44,9 @@ class ExchangeRatesAPIService(BaseAPIService):
         try:
             headers = {"Content-Type": "application/x-www-form-urlencoded"}
             return await self._patch(
-                f"{self.base_url}/{self.endpoint}", data=pyaload, headers=headers,
+                f"{self.base_url}/{self.endpoint}",
+                data=pyaload,
+                headers=headers,
             )
         except httpx.HTTPStatusError as exc:
             if exc.response.status_code == 404:

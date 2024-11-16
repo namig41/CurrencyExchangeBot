@@ -9,6 +9,8 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
 from application.bot.handlers import (
+    currencies_handler,
+    currency_handler,
     help_handler,
     start_handler,
 )
@@ -29,6 +31,8 @@ async def main():
     dp = Dispatcher()
     dp.include_router(start_handler.router)
     dp.include_router(help_handler.router)
+    dp.include_router(currency_handler.router)
+    dp.include_router(currencies_handler.router)
 
     await dp.start_polling(bot)
 

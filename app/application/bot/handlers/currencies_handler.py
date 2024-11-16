@@ -1,10 +1,12 @@
 from typing import Iterable
+from punq import Container
 
 from aiogram import (
     Router,
     types,
 )
 from aiogram.filters import Command
+from infrastructure.contrainer.init import init_container
 from infrastructure.repositories.base import BaseCurrenciesRepository
 
 from application.bot.handlers.converters import convert_currencies_entity_to_string
@@ -15,10 +17,12 @@ router = Router()
 
 
 @router.message(Command(commands=["currencies"]))
-async def currency_handler(
-    message: types.Message, currenies_repository: BaseCurrenciesRepository,
+async def currencies_handler(
+    message: types.Message,
 ):
-    currencies: Iterable[Currency] = await currenies_repository.get_currencies()
+    container: Container = init_container()
+    currencies_repository = container.resolve(BaseCurrenciesRepository)
+    currencies: Iterable[Currency] = await currencies_repository.get_currencies()
 
     if currencies:
         currencies_str = convert_currencies_entity_to_string(currencies)

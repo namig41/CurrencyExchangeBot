@@ -1,7 +1,12 @@
 from dataclasses import dataclass
+from typing import Protocol
 
 import httpx
-from infrastructure.api.base import BaseAPIService
+from infrastructure.api.services.base import BaseAPIService
+
+
+class CurrencyAPIService(Protocol):
+    async def get_currency(self, currency_code: str) -> dict: ...
 
 
 @dataclass
