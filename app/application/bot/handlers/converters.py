@@ -14,8 +14,8 @@ def convert_currency_entity_to_string(currency: Currency) -> str:
 
 def convert_currencies_entity_to_string(currencies: Iterable[Currency]) -> str:
     currencies_str = ""
-    for currency in currencies:
-        currencies_str += convert_currency_entity_to_string(currency)
+    for index, currency in enumerate(currencies):
+        currencies_str += f"{index + 1}. {convert_currency_entity_to_string(currency)}"
         currencies_str += "\n"
     return currencies_str
 

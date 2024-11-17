@@ -2,9 +2,7 @@ services:
   main-app:
     container_name: main-app
     build: ..
-    command: 'python3 application/bot/main.py'
-    ports:
-      - '8000:8000'
+    command: 'python app/application/bot/main.py'
     volumes:
       - ../app/:/app
     env_file:

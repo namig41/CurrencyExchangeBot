@@ -21,11 +21,13 @@ async def currencies_handler(
     message: types.Message,
 ):
     container: Container = init_container()
-    currencies_repository = container.resolve(BaseCurrenciesRepository)
+    currencies_repository: BaseCurrenciesRepository = container.resolve(
+        BaseCurrenciesRepository,
+    )
     currencies: Iterable[Currency] = await currencies_repository.get_currencies()
 
     if currencies:
-        currencies_str = convert_currencies_entity_to_string(currencies)
+        currencies_str: str = convert_currencies_entity_to_string(currencies)
         await message.answer(f"<b>Список валют</b>\n{currencies_str}")
     else:
         await message.answer("Список валют пустой.")

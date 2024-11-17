@@ -3,7 +3,14 @@ from typing import Iterable
 
 from domain.entities.currency import Currency
 from domain.entities.exchange_rate import ExchangeRate
-from domain.value_objects.rate import Rate
+
+
+def convert_currency_entity_without_id_to_document(currency: Currency) -> dict:
+    return {
+        "code": currency.code.as_generic_type(),
+        "name": currency.fullname,
+        "sign": currency.sign,
+    }
 
 
 def convert_currency_entity_to_document(currency: Currency) -> dict:
@@ -48,20 +55,6 @@ def convert_exchange_rate_entity_to_document(exchange_rate: ExchangeRate) -> dic
 
 def convert_exchange_rate_document_to_entity(
     exchange_rate_data: dict,
-    base_currency: Currency,
-    target_currency: Currency,
-) -> ExchangeRate:
-
-    return ExchangeRate(
-        id=exchange_rate_data["id"],
-        base_currency=base_currency,
-        target_currency=target_currency,
-        rate=Rate(Decimal(exchange_rate_data["rate"])),
-    )
-
-
-def convert_exchange_rate_all_document_to_entity(
-    exchange_rate_data: dict,
 ) -> ExchangeRate:
 
     exchnage_rate_id = int(exchange_rate_data["id"])
@@ -85,7 +78,7 @@ def convert_exchange_rates_document_to_entity(
     exchange_rates_data: list[dict],
 ) -> Iterable[ExchangeRate]:
     return [
-        convert_exchange_rate_all_document_to_entity(exchange_rate_data)
+        convert_exchange_rate_document_to_entity(exchange_rate_data)
         for exchange_rate_data in exchange_rates_data
     ]
 

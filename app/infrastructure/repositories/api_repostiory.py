@@ -12,7 +12,9 @@ from infrastructure.repositories.base import (
 from infrastructure.repositories.converters import (
     convert_currencies_document_to_entity,
     convert_currency_document_to_entity,
-    convert_currency_entity_to_document,
+    convert_currency_entity_without_id_to_document,
+    convert_exchange_rate_document_to_entity,
+    convert_exchange_rate_entity_to_document,
     convert_exchange_rates_document_to_entity,
 )
 
@@ -40,10 +42,13 @@ class CurrenciesAPIRepository(BaseCurrenciesRepository):
         except Exception as e:
             raise e
 
-    async def add_currency(self, currency: Currency) -> None:
+    async def add_currency(self, currency: Currency) -> Currency | None:
         try:
-            currency_data: dict = convert_currency_entity_to_document(currency)
+            currency_data: dict = convert_currency_entity_without_id_to_document(
+                currency,
+            )
             currency: dict = await self.currencies_api.post_currencies(currency_data)
+            return convert_currency_document_to_entity(currency)
         except Exception as e:
             raise e
 
@@ -60,10 +65,10 @@ class ExchangeRatesAPIRepository(BaseExchangeRatesRepository):
         target_code: str,
     ) -> ExchangeRate | None:
         try:
-            exchange_rates_document: dict = (
+            exchange_rate_document: dict = (
                 await self.exchange_rate_api.get_exchange_rate(base_code, target_code)
             )
-            return convert_exchange_rates_document_to_entity(exchange_rates_document)
+            return convert_exchange_rate_document_to_entity(exchange_rate_document)
         except Exception as e:
             raise e
 
@@ -78,7 +83,7 @@ class ExchangeRatesAPIRepository(BaseExchangeRatesRepository):
 
     async def add_exchange_rate(self, exchange_rate: ExchangeRate) -> None:
         try:
-            exchange_rate_data: dict = convert_currency_entity_to_document(
+            exchange_rate_data: dict = convert_exchange_rate_entity_to_document(
                 exchange_rate,
             )
             exchange_rate_document: dict = (
@@ -90,7 +95,7 @@ class ExchangeRatesAPIRepository(BaseExchangeRatesRepository):
 
     async def update_exchange_rate(self, exchange_rate: ExchangeRate) -> None:
         try:
-            exchange_rate_data: dict = convert_currency_entity_to_document(
+            exchange_rate_data: dict = convert_exchange_rate_entity_to_document(
                 exchange_rate,
             )
             exchange_rate_document: dict = (
