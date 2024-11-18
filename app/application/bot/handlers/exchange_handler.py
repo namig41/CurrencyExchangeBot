@@ -1,5 +1,3 @@
-from decimal import Decimal
-
 from aiogram import (
     Router,
     types,
@@ -7,6 +5,8 @@ from aiogram import (
 from aiogram.filters import Command
 from infrastructure.services.exchange import exchange_by_codes
 
+from application.bot.handlers.converters import convert_exchange_entity_to_string
+from domain.entities.exchange import Exchange
 from domain.exceptions.base import ApplicationException
 from domain.value_objects.currency_code import Code
 
@@ -30,13 +30,15 @@ async def exchange_rate_add_handler(
     try:
         base_code = Code(args[0].strip().upper())
         target_code = Code(args[1].strip().upper())
-        amount = Decimal(args[2].strip())
+        amount = float(args[2].strip())
 
-        exchange: dict = await exchange_by_codes(base_code, target_code, amount)
+        exchange: Exchange = await exchange_by_codes(
+            base_code, target_code, amount,
+        )
 
         if exchange:
-            convertedAmount = float(exchange["convertedAmount"])
-            await message.answer(f"<b>Сконвертированная сумма:</b> {convertedAmount}\n")
+            exchange_str = convert_exchange_entity_to_string(exchange)
+            await message.answer(f"<b>Расчёт перевода</b>\n{exchange_str}")
         else:
             await message.answer("Не удалось сконвертировать валюту.")
     except ApplicationException as exception:

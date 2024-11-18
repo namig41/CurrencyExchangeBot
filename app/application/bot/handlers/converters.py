@@ -1,6 +1,7 @@
 from typing import Iterable
 
 from domain.entities.currency import Currency
+from domain.entities.exchange import Exchange
 from domain.entities.exchange_rate import ExchangeRate
 
 
@@ -40,3 +41,12 @@ def convert_exchange_rates_entity_to_string(
         )
         exchange_rates_str += "\n\n"
     return exchange_rates_str
+
+
+def convert_exchange_entity_to_string(
+    exchange: Exchange,
+) -> str:
+    exchange_str = f"{convert_exchange_rate_entity_to_string(exchange.exchange_rate)}\n"
+    exchange_str += f"<b>Количество средств:</b> {exchange.amount}\n"
+    exchange_str += f"<b>Сконвертированная сумма:</b> {exchange.converted_amount}\n"
+    return exchange_str

@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from infrastructure.exceptions.base import InfrastructureException
 
 
-@dataclass
+@dataclass(eq=False)
 class APIServiceException(InfrastructureException):
     text: str
 

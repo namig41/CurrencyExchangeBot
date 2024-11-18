@@ -101,32 +101,3 @@ def convert_exchange_rates_entity_to_document(
         convert_exchange_rate_entity_to_document(exchange_rate)
         for exchange_rate in exchange_rates
     ]
-
-
-def convert_exchange_entity_to_document(
-    exchange_rate: ExchangeRate,
-    amount: float,
-    converted_amount: float,
-) -> dict:
-
-    exchange_data = convert_exchange_rate_entity_to_document(exchange_rate)
-    exchange_data["amount"] = float(amount)
-    exchange_data["convertedAmount"] = float(converted_amount)
-
-    return exchange_data
-
-
-def convert_exchanges_entity_to_document(
-    exchange_rates: Iterable[ExchangeRate],
-    amount: float,
-    converted_amount: float,
-) -> dict:
-
-    exchange_rates_data = convert_exchange_rates_entity_to_document(exchange_rates)
-
-    exchange_data = {}
-    exchange_data["amount"] = float(amount)
-    exchange_data["convertedAmount"] = float(converted_amount)
-    exchange_data["currencies"] = exchange_rates_data
-
-    return exchange_data
