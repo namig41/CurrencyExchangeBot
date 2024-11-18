@@ -33,6 +33,8 @@ async def currency_handler(
             currency_str = convert_currency_entity_to_string(currency)
             await message.answer(f"<b>Информация о валюте</b>\n{currency_str}")
         else:
-            await message.answer("Не удалось получить курс валюты. Проверьте код валюты.")
+            await message.answer(
+                "Не удалось получить курс валюты. Проверьте код валюты.",
+            )
     except ApplicationException as exception:
         await message.answer(exception.message)

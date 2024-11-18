@@ -15,8 +15,8 @@ class Currency(BaseEntity):
         kw_only=True,
     )
     code: Code
-    fullname: str
-    sign: str
+    fullname: str = ""
+    sign: str = ""
 
     def validate(self): ...
 

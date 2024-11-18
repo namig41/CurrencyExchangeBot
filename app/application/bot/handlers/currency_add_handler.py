@@ -20,13 +20,18 @@ router = Router()
 async def currency_handler(
     message: types.Message,
 ):
-    args = message.text.split()
-    if len(args) != 4:
+    args = message.text[len("/currency_add "):].split("|")  # Разделяем по |
+    if len(args) != 3:
         await message.answer(
-            "Пожалуйста, укажите название валюты, код валюты, символ валюты.\n"
-            "Например: /currency_add Euro EUR €",
+            "Пожалуйста, используйте формат:\n"
+            "/currency_add <Название валюты> | <Код валюты> | <Символ>\n"
+            "Пример: /currency_add Azerbaijanian Manat | AZN | C",
         )
         return
+
+    currency_name = args[0].strip()
+    currency_code = args[1].strip().upper()
+    currency_sign = args[2].strip()
 
     container: Container = init_container()
     currencies_repository: BaseCurrenciesRepository = container.resolve(
@@ -34,10 +39,6 @@ async def currency_handler(
     )
 
     try:
-        currency_name = args[1]
-        currency_code = args[2].upper()
-        currency_sign = args[3]
-
         currency: Currency = Currency(Code(currency_code), currency_name, currency_sign)
         currency: Currency = await currencies_repository.add_currency(currency)
 

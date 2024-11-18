@@ -7,4 +7,4 @@ from domain.exceptions.base import ApplicationException
 class CodeIsIvalideException(ApplicationException):
     @property
     def message(self):
-        return "Неправильное значение кода валюты"
+        return "Код валюты должен быть из 3 символов"

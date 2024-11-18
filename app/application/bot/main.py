@@ -12,6 +12,8 @@ from application.bot.handlers import (
     currencies_handler,
     currency_add_handler,
     currency_handler,
+    exchange_handler,
+    exchange_rate_add_handler,
     exchange_rate_handler,
     exchange_rates_handler,
     help_handler,
@@ -38,7 +40,9 @@ async def main():
     dp.include_router(currency_add_handler.router)
     dp.include_router(currencies_handler.router)
     dp.include_router(exchange_rate_handler.router)
+    dp.include_router(exchange_rate_add_handler.router)
     dp.include_router(exchange_rates_handler.router)
+    dp.include_router(exchange_handler.router)
 
     await dp.start_polling(bot)
 

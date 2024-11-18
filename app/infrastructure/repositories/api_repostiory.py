@@ -16,6 +16,7 @@ from infrastructure.repositories.converters import (
     convert_currency_entity_without_id_to_document,
     convert_exchange_rate_document_to_entity,
     convert_exchange_rate_entity_to_document,
+    convert_exchange_rate_entity_without_id_to_document,
     convert_exchange_rates_document_to_entity,
 )
 
@@ -84,13 +85,15 @@ class ExchangeRatesAPIRepository(BaseExchangeRatesRepository):
 
     async def add_exchange_rate(self, exchange_rate: ExchangeRate) -> None:
         try:
-            exchange_rate_data: dict = convert_exchange_rate_entity_to_document(
-                exchange_rate,
+            exchange_rate_data: dict = (
+                convert_exchange_rate_entity_without_id_to_document(
+                    exchange_rate,
+                )
             )
             exchange_rate_document: dict = (
-                await self.exchange_rates_api.post_exchange_rate(exchange_rate_data)
+                await self.exchange_rates_api.post_exchange_rates(exchange_rate_data)
             )
-            return convert_exchange_rates_document_to_entity(exchange_rate_document)
+            return convert_exchange_rate_document_to_entity(exchange_rate_document)
         except APIServiceException:
             raise
 

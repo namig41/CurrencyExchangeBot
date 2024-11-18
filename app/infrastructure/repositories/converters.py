@@ -40,6 +40,16 @@ def convert_currencies_document_to_entity(
     ]
 
 
+def convert_exchange_rate_entity_without_id_to_document(
+    exchange_rate: ExchangeRate,
+) -> dict:
+    return {
+        "baseCurrencyCode": exchange_rate.base_currency.code.as_generic_type(),
+        "targetCurrencyCode": exchange_rate.target_currency.code.as_generic_type(),
+        "rate": exchange_rate.rate.as_generic_type(),
+    }
+
+
 def convert_exchange_rate_entity_to_document(exchange_rate: ExchangeRate) -> dict:
     return {
         "id": exchange_rate.id,

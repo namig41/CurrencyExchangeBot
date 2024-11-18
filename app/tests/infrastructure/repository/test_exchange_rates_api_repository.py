@@ -32,7 +32,10 @@ async def test_get_exchange_rate_api_repository(container: Container):
     assert exchange_rate == ExchangeRate(
         id=1,
         base_currency=Currency(
-            id=1, code="USD", fullname="United States dollar", sign="$",
+            id=1,
+            code="USD",
+            fullname="United States dollar",
+            sign="$",
         ),
         target_currency=Currency(id=2, code="EUR", fullname="Euro", sign="€"),
         rate=Decimal("0.5"),
