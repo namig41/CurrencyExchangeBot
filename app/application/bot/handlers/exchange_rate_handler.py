@@ -9,6 +9,7 @@ from punq import Container
 
 from application.bot.handlers.converters import convert_exchange_rate_entity_to_string
 from domain.entities.exchange_rate import ExchangeRate
+from domain.exceptions.base import ApplicationException
 
 
 router = Router()
@@ -30,17 +31,21 @@ async def currency_handler(
         BaseExchangeRatesRepository,
     )
 
-    base_code = args[1].upper()
-    target_code = args[2].upper()
-    exchange_rate: ExchangeRate = (
-        await exchange_rates_repository.get_exchange_rate_by_codes(
-            base_code=base_code,
-            target_code=target_code,
+    try:
+        base_code = args[1].upper()
+        target_code = args[2].upper()
+        exchange_rate: ExchangeRate = (
+            await exchange_rates_repository.get_exchange_rate_by_codes(
+                base_code=base_code,
+                target_code=target_code,
+            )
         )
-    )
 
-    if exchange_rate:
-        exchange_rate_str = convert_exchange_rate_entity_to_string(exchange_rate)
-        await message.answer(f"<b>Информация о обменнике</b>\n{exchange_rate_str}")
-    else:
-        await message.answer("Не удалось получить обменник. Проверьте коды валют.")
+        if exchange_rate:
+            exchange_rate_str = convert_exchange_rate_entity_to_string(exchange_rate)
+            await message.answer(f"<b>Информация о обменнике</b>\n{exchange_rate_str}")
+        else:
+            await message.answer("Не удалось получить обменник. Проверьте коды валют.")
+
+    except ApplicationException as exception:
+        await message.answer(exception.message)

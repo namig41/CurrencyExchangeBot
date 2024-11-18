@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 
-import httpx
 from infrastructure.api.services.base import BaseAPIService
+
+from domain.exceptions.base import ApplicationException
 
 
 @dataclass
@@ -11,10 +12,7 @@ class ExchangeRatesAPIService(BaseAPIService):
     async def get_exchange_rates(self) -> list[dict]:
         try:
             return await self._get(f"{self.base_url}/{self.endpoint}")
-        except httpx.HTTPStatusError as exc:
-            if exc.response.status_code == 404:
-                self.logger.warning("Currencies endpoint not found.")
-                return {}
+        except ApplicationException:
             raise
 
     async def post_exchange_rates(self, pyaload: dict) -> dict:
@@ -25,10 +23,7 @@ class ExchangeRatesAPIService(BaseAPIService):
                 data=pyaload,
                 headers=headers,
             )
-        except httpx.HTTPStatusError as exc:
-            if exc.response.status_code == 404:
-                self.logger.warning("Currencies endpoint not found.")
-                return {}
+        except ApplicationException:
             raise
 
     async def patch_exchange_rates(self, pyaload: dict) -> dict:
@@ -39,8 +34,5 @@ class ExchangeRatesAPIService(BaseAPIService):
                 data=pyaload,
                 headers=headers,
             )
-        except httpx.HTTPStatusError as exc:
-            if exc.response.status_code == 404:
-                self.logger.warning("Currencies endpoint not found.")
-                return {}
+        except ApplicationException:
             raise

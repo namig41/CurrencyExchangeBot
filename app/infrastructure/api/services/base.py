@@ -18,7 +18,6 @@ class BaseAPIService:
     logger: ILogger = field(default_factory=lambda: create_logger_dependency())
 
     def __post_init__(self):
-        # Применяем декораторы с использованием реального логгера
         self._get = handle_api_errors(self.logger)(self._get)
         self._post = handle_api_errors(self.logger)(self._post)
         self._patch = handle_api_errors(self.logger)(self._patch)

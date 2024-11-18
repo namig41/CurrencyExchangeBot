@@ -5,6 +5,7 @@ from infrastructure.api.interfaces.currencies import ICurrenciesAPIService
 from infrastructure.api.interfaces.currency import ICurrencyAPIService
 from infrastructure.api.interfaces.exchange_rate import IExchangeRateAPIService
 from infrastructure.api.interfaces.exchange_rates import IExchangeRatesAPIService
+from infrastructure.exceptions.api_excpetion import APIServiceException
 from infrastructure.repositories.base import (
     BaseCurrenciesRepository,
     BaseExchangeRatesRepository,
@@ -32,15 +33,15 @@ class CurrenciesAPIRepository(BaseCurrenciesRepository):
         try:
             currencies_data: list[dict] = await self.currencies_api.get_currencies()
             return convert_currencies_document_to_entity(currencies_data)
-        except Exception as e:
-            raise e
+        except APIServiceException:
+            raise
 
     async def get_currency_by_code(self, currency_code: str) -> Currency | None:
         try:
             currency: dict = await self.currency_api.get_currency(currency_code)
             return convert_currency_document_to_entity(currency)
-        except Exception as e:
-            raise e
+        except APIServiceException:
+            raise
 
     async def add_currency(self, currency: Currency) -> Currency | None:
         try:
@@ -49,8 +50,8 @@ class CurrenciesAPIRepository(BaseCurrenciesRepository):
             )
             currency: dict = await self.currencies_api.post_currencies(currency_data)
             return convert_currency_document_to_entity(currency)
-        except Exception as e:
-            raise e
+        except APIServiceException:
+            raise
 
 
 @dataclass
@@ -69,8 +70,8 @@ class ExchangeRatesAPIRepository(BaseExchangeRatesRepository):
                 await self.exchange_rate_api.get_exchange_rate(base_code, target_code)
             )
             return convert_exchange_rate_document_to_entity(exchange_rate_document)
-        except Exception as e:
-            raise e
+        except APIServiceException:
+            raise
 
     async def get_exchange_rates(self) -> Iterable[ExchangeRate]:
         try:
@@ -78,8 +79,8 @@ class ExchangeRatesAPIRepository(BaseExchangeRatesRepository):
                 await self.exchange_rates_api.get_exchange_rates()
             )
             return convert_exchange_rates_document_to_entity(exchange_rates_document)
-        except Exception as e:
-            raise e
+        except APIServiceException:
+            raise
 
     async def add_exchange_rate(self, exchange_rate: ExchangeRate) -> None:
         try:
@@ -90,8 +91,8 @@ class ExchangeRatesAPIRepository(BaseExchangeRatesRepository):
                 await self.exchange_rates_api.post_exchange_rate(exchange_rate_data)
             )
             return convert_exchange_rates_document_to_entity(exchange_rate_document)
-        except Exception as e:
-            raise e
+        except APIServiceException:
+            raise
 
     async def update_exchange_rate(self, exchange_rate: ExchangeRate) -> None:
         try:
@@ -102,5 +103,5 @@ class ExchangeRatesAPIRepository(BaseExchangeRatesRepository):
                 await self.exchange_rates_api.patch_exchange_rate(exchange_rate_data)
             )
             return convert_exchange_rates_document_to_entity(exchange_rate_document)
-        except Exception as e:
-            raise e
+        except APIServiceException:
+            raise
