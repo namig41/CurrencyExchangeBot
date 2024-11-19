@@ -17,6 +17,7 @@ async def help_handler(message: types.Message):
         "/currencies - Список всех валют\n"
         "/exchange_rate &lt;код базовой валюты&gt &lt;код целевой валюты&gt - Узнать информацию о обменнике\n"
         "/exchange_rate_add &lt;Базовая валюта&gt | &lt;Целевая валюта&gt | &lt;Курс&gt - Добавить новый обменник\n"
-        "/exchange_rates - Список всех обменников\n",
+        "/exchange_rates - Список всех обменников\n"
+        "/exchange_rate_update &lt;Базовая валюта&gt | &lt;Целевая валюта&gt | &lt;Курс&gt - Обновить обменник\n"
         "/exchange &lt;Базовая валюта&gt | &lt;Целевая валюта&gt | &lt;Средства&gt - Перевод с одной валюты в другую\n",
     )

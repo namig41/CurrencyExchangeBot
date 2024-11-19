@@ -16,7 +16,7 @@ router = Router()
 
 
 @router.message(Command(commands=["exchange_rate"]))
-async def currency_handler(
+async def exchange_rate_handler(
     message: types.Message,
 ):
     args = message.text.split()

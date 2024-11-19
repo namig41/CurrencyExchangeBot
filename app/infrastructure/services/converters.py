@@ -8,7 +8,9 @@ from domain.value_objects.currency_code import Code
 
 
 def convert_exchange_to_document(
-    base_code: Code, target_code: Code, amount: float,
+    base_code: Code,
+    target_code: Code,
+    amount: float,
 ) -> dict:
 
     exchange_data = {}
@@ -33,7 +35,7 @@ def convert_exchange_entity_to_document(
 
 def convert_exchange_document_to_entity(exchange_data: dict) -> Exchange:
     return Exchange(
-            exchange_rate=convert_exchange_rate_document_to_entity(exchange_data),
-            amount=exchange_data["amount"],
-            converted_amount=exchange_data["convertedAmount"],
+        exchange_rate=convert_exchange_rate_document_to_entity(exchange_data),
+        amount=exchange_data["amount"],
+        converted_amount=exchange_data["convertedAmount"],
     )

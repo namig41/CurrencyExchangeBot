@@ -7,6 +7,7 @@ from typing import Iterable
 
 from domain.entities.currency import Currency
 from domain.entities.exchange_rate import ExchangeRate
+from domain.value_objects.rate import Rate
 
 
 @dataclass
@@ -38,4 +39,4 @@ class BaseExchangeRatesRepository(ABC):
     async def add_exchange_rate(self, exchange_rate: ExchangeRate) -> None: ...
 
     @abstractmethod
-    async def update_exchange_rate(self, exchange_rate: ExchangeRate) -> None: ...
+    async def update_exchange_rate(self, base_code: str, target_code: str, rate: Rate) -> None: ...

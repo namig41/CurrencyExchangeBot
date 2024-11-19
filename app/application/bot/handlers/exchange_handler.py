@@ -15,7 +15,7 @@ router = Router()
 
 
 @router.message(Command(commands=["exchange"]))
-async def exchange_rate_add_handler(
+async def exchange_handler(
     message: types.Message,
 ):
     args = message.text[len("/exchange "):].split("|")  # Разделяем по |
@@ -33,7 +33,9 @@ async def exchange_rate_add_handler(
         amount = float(args[2].strip())
 
         exchange: Exchange = await exchange_by_codes(
-            base_code, target_code, amount,
+            base_code,
+            target_code,
+            amount,
         )
 
         if exchange:

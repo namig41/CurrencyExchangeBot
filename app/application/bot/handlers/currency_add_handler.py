@@ -17,7 +17,7 @@ router = Router()
 
 
 @router.message(Command(commands=["currency_add"]))
-async def currency_handler(
+async def currency_add_handler(
     message: types.Message,
 ):
     args = message.text[len("/currency_add "):].split("|")  # Разделяем по |

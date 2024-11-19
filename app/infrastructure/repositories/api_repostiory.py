@@ -15,13 +15,13 @@ from infrastructure.repositories.converters import (
     convert_currency_document_to_entity,
     convert_currency_entity_without_id_to_document,
     convert_exchange_rate_document_to_entity,
-    convert_exchange_rate_entity_to_document,
     convert_exchange_rate_entity_without_id_to_document,
     convert_exchange_rates_document_to_entity,
 )
 
 from domain.entities.currency import Currency
 from domain.entities.exchange_rate import ExchangeRate
+from domain.value_objects.rate import Rate
 
 
 @dataclass
@@ -97,14 +97,16 @@ class ExchangeRatesAPIRepository(BaseExchangeRatesRepository):
         except APIServiceException:
             raise
 
-    async def update_exchange_rate(self, exchange_rate: ExchangeRate) -> None:
+    async def update_exchange_rate(self, base_code: str, target_code: str, rate: Rate) -> None:
         try:
-            exchange_rate_data: dict = convert_exchange_rate_entity_to_document(
-                exchange_rate,
-            )
+
             exchange_rate_document: dict = (
-                await self.exchange_rates_api.patch_exchange_rate(exchange_rate_data)
+                await self.exchange_rate_api.patch_exchange_rate(
+                    base_code,
+                    target_code,
+                    {"rate": rate.as_generic_type()},
+                )
             )
-            return convert_exchange_rates_document_to_entity(exchange_rate_document)
+            return convert_exchange_rate_document_to_entity(exchange_rate_document)
         except APIServiceException:
             raise

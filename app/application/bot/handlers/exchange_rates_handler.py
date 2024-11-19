@@ -18,7 +18,7 @@ router = Router()
 
 
 @router.message(Command(commands=["exchange_rates"]))
-async def currency_handler(
+async def exchange_rates_handler(
     message: types.Message,
 ):
     container: Container = init_container()
