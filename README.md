@@ -1,4 +1,3 @@
-```markdown
 # CurrencyExchangeBot
 
 CurrencyExchangeBot — это Telegram-бот, позволяющий взаимодействовать с валютами и обменниками через удобные команды.
